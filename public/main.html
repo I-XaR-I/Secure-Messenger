@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Messenger</title>
+    <script defer src="http://localhost:8000/socket.io/socket.io.js"></script>
+    <script defer src="js/client.js"></script>
+    <script defer src="https://cdn.lordicon.com/lordicon.js"></script>
+    <link rel="stylesheet" href="css/main_style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="background"></div>
+    <div id="main-container">
+        <div id="user_area">
+            <div id="user_header">
+                <a href="">
+                    Secure Messenger
+                </a>
+            </div>
+            <div id="navUserArea">
+                <input type="search" id="searchbox" autocomplete="off" placeholder="Enter your friend's username"
+                    onfocus="toggleFriendsMenu()" onblur="hideFriendsMenu()">
+                <div class="friends-menu-wrap" id="friendsMenu">
+                    <div class="friends-menu">
+                        <!-- users will be added dynamically here -->
+                    </div>
+                </div>
+                <i id='settings' class="ri-settings-3-fill" onclick="toggleMenu()"></i>
+                <div class="sub-menu-wrap" id="subMenu">
+                    <div class="sub-menu">
+                        <a href="#" class="sub-menu-link" id="logoutBtn">
+                            <lord-icon src="https://cdn.lordicon.com/gwvmctbb.json" trigger="hover" stroke="bold"
+                                style="width:30px;height:30px">
+                            </lord-icon>
+                            <p>Log Out</p>
+                            <span>></span>
+                        </a>
+                        <hr>
+                        <a href="#" class="sub-menu-link">
+                            <lord-icon src="https://cdn.lordicon.com/kezeezyg.json" trigger="loop" state="loop-roll"
+                                style="width:30px;height:30px">
+                            </lord-icon>
+                            <p>Donate</p>
+                            <span>></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="friends">
+                <div id="globalchat">
+                    <lord-icon src="https://cdn.lordicon.com/okdadkfx.json" trigger="loop" stroke="bold"
+                        state="loop-rotate" colors="primary:#110a5c,secondary:#66d7ee" style="width:40px;height:40px">
+                    </lord-icon>
+                    <h3>Global Chat</h3>
+                </div>
+                <hr>
+                <div id="usersfriends">
+                    <!-- friends will be added here according to the template -->
+                </div>
+            </div>
+        </div>
+        <div id="chat_area">
+            <div class="container">
+                <!-- Messages will be appended here -->
+            </div>
+            <div class="send">
+                <form action="#" id="send-container" onsubmit="return false">
+                    <input type="text" name="messageInp" id="messageInp" autocomplete="off"
+                        placeholder="Type your message here...">
+                    <button class="btn" type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script defer>
+        // Remove the duplicate declaration
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+
+        if (!username) {
+            window.location.href = '/public/login.html';
+        }
+
+        let subMenu = document.getElementById('subMenu');
+        function toggleMenu() {
+            subMenu.classList.toggle('open-menu');
+        }
+        let friendsMenu = document.getElementById('friendsMenu');
+
+        function toggleFriendsMenu() {
+            friendsMenu.classList.add('activate');
+        }
+
+        function hideFriendsMenu() {
+            // Delay the hiding to allow clicking on dropdown links
+            setTimeout(() => {
+                friendsMenu.classList.remove('activate');
+            }, 200);
+        }
+
+        async function fetchFriends(query) {
+            try {
+                const response = await fetch(`http://localhost:8000/search-friends?query=${query}`, {
+                    credentials: 'include' // Ensure cookies are included in the request
+                });
+                const friends = await response.json();
+                const friendsMenu = document.getElementById('friendsMenu');
+                friendsMenu.innerHTML = ''; // Clear previous results
+                friends.forEach(friend => {
+                    const friendLink = document.createElement('a');
+                    friendLink.href = '#';
+                    friendLink.classList.add('friends-menu-link');
+                    friendLink.innerHTML = `<p>${friend.username} <lord-icon class="usericon" src="https://cdn.lordicon.com/xcxzayqr.json" trigger="hover" state="hover-looking-around"stroke="bold" colors="primary:#242424,secondary:#794628" style="width:15px;height:15px"></lord-icon></p>`;
+                    friendsMenu.appendChild(friendLink);
+                });
+            } catch (error) {
+                console.error('Error fetching friends:', error);
+            }
+        }
+
+        document.getElementById('searchbox').addEventListener('input', (e) => {
+            const query = e.target.value;
+            if (query) {
+                fetchFriends(query);
+            } else {
+                document.getElementById('friendsMenu').innerHTML = '';
+            }
+        });
+
+        async function addFriend(friendUsername) {
+            try {
+                const response = await fetch(`http://localhost:8000/add-friend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ friendUsername, username }),
+                    credentials: 'include' // Ensure cookies are included in the request
+                });
+                if (response.ok) {
+                    fetchUserFriends();
+                } else {
+                    console.error('Error adding friend:', await response.text());
+                }
+            } catch (error) {
+                console.error('Error adding friend:', error);
+            }
+        }
+
+        async function fetchUserFriends() {
+            try {
+                const response = await fetch(`http://localhost:8000/get-friends?username=${username}`, {
+                    credentials: 'include' // Ensure cookies are included in the request
+                });
+                const friends = await response.json();
+                const usersFriends = document.getElementById('usersfriends');
+                usersFriends.innerHTML = ''; // Clear previous friends
+                friends.forEach(friend => {
+                    const friendLink = document.createElement('a');
+                    friendLink.href = '#';
+                    friendLink.innerHTML = `<lord-icon src="https://cdn.lordicon.com/kiynvdns.json" trigger="loop" delay="1000" stroke="bold" state="hover-conversation-alt" colors="primary:#110a5c,secondary:#f28ba8,tertiary:#ffc738,quaternary:#66d7ee,quinary:#ebe6ef" style="width:40px;height:40px"></lord-icon><p>${friend.username}</p>`;
+                    usersFriends.appendChild(friendLink);
+                    usersFriends.appendChild(document.createElement('hr'));
+                });
+            } catch (error) {
+                console.error('Error fetching friends:', error);
+            }
+        }
+
+        document.getElementById('friendsMenu').addEventListener('click', (e) => {
+            if (e.target.tagName === 'P') {
+                const friendUsername = e.target.textContent.trim();
+                addFriend(friendUsername);
+            }
+        });
+
+        fetchUserFriends(); // Initial fetch of user's friends
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            window.location.href = '/public/login.html';
+        });
+    </script>
+</body>
+</html>

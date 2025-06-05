@@ -1,0 +1,37 @@
+/secure-messaging-app
+├── /client                     # Frontend - React.js
+│   ├── /public                 # Static files (index.html, etc.)
+│   ├── /src
+│   │   ├── /components         # Reusable React components
+│   │   │   ├── LoginForm.js    # Login form component
+│   │   │   ├── RegistrationForm.js  # Registration form component
+│   │   │   ├── Dashboard.js    # Dashboard with conversation list
+│   │   │   ├── Conversation.js # Conversation view
+│   │   │   ├── Message.js      # Individual message component
+│   │   │   ├── ProfileSettings.js  # Profile and password settings
+│   │   │   ├── SocketContext.js    # Context for Socket.IO connection
+│   │   ├── /utils              # Utility functions (e.g., encryption, validation)
+│   │   ├── App.js              # Main app component that routes pages
+│   │   ├── index.js            # Entry point to the React app
+│   ├── package.json            # Frontend dependencies and build config
+├── /server                     # Backend - Node.js with Express and Socket.IO
+│   ├── /controllers            # Controllers for handling routes
+│   │   ├── authController.js   # Handles login, registration, and authentication
+│   │   ├── messageController.js  # Handles sending, receiving messages
+│   │   ├── userController.js   # Handles user profile and settings
+│   ├── /models                 # Database models (using Sequelize or raw SQL queries)
+│   │   ├── User.js             # User model (stores user info and hashed passwords)
+│   │   ├── Message.js          # Message model (stores messages and metadata)
+│   ├── /routes                 # API routes (login, register, messages, etc.)
+│   │   ├── authRoutes.js       # Authentication routes (login, register)
+│   │   ├── messageRoutes.js    # Message routes (sending, receiving messages)
+│   │   ├── userRoutes.js       # User routes (profile, settings)
+│   ├── /utils                  # Utility functions (e.g., encryption, JWT auth)
+│   │   ├── encryption.js       # AES encryption and RSA key exchange logic
+│   │   ├── tokenUtils.js       # JWT token generation and validation
+│   ├── /config                 # Configuration files
+│   │   ├── db.js               # MySQL database configuration
+│   │   ├── socket.js           # Socket.IO server setup
+│   ├── server.js               # Entry point for the Node.js server
+│   ├── package.json            # Backend dependencies and server config
+└── /node_modules               # Installed Node.js dependencies

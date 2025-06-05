@@ -1,0 +1,502 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+
+}
+
+:root {
+    --mainColor: #1e3c72;
+    --whiteColor: #ffffff;
+    --titleColor: #555555;
+    --labelColor: #333333;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    z-index: -1;
+}
+
+#main-container {
+    height: 95%;
+    width: 95%;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    position: relative;
+    transition: box-shadow 0.5s ease;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+}
+
+#main-container::after,
+#main-container::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    background-image: conic-gradient(from var(--angle), transparent 30%, rgb(160, 33, 238));
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    padding: 8px;
+    animation: 5s spin linear infinite;
+    overflow: hidden;
+}
+
+#main-container::before {
+    filter: blur(50px);
+}
+
+@keyframes spin {
+    from {
+        --angle: 0deg;
+    }
+
+    to {
+        --angle: 360deg;
+    }
+}
+
+#user_area {
+    border-radius: 20px 0 0 20px;
+    height: 100%;
+    width: 25%;
+    /* position: relative;   */
+    background-image: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+}
+
+#user_area::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 0.3%;
+    background: rgb(24, 0, 94);
+    left: 25%;
+    top: 0;
+    position: relative;
+}
+
+#chat_area {
+    height: 100%;
+    width: 75%;
+    border-radius: 0 20px 20px 0;
+    background-image: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.container {
+    max-width: 90%;
+    /* border: 1px solid #ccc;
+    border-radius: 10px; */
+    margin: 20px auto;
+    height: 85%;
+    overflow-y: auto;
+    padding: 20px;
+    /* background-color: red; */
+}
+
+.message {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+    word-wrap: break-word;
+    display: flex;
+}
+
+.left {
+    justify-content: flex-start;
+    float: left;
+    clear: both;
+}
+
+.right {
+    float: right;
+    justify-content: flex-end;
+    align-self: flex-end;
+    clear: both;
+}
+
+#send-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 15%;
+    padding: 10px;
+    /* background-color: #f1f1f1; */
+}
+
+#messageInp::placeholder {
+    color: white;
+}
+
+#messageInp {
+    width: 80%;
+    border: none;
+    border-radius: 100px;
+    padding: 10px;
+    font-size: 16px;
+    font-family: cursive;
+    background-image: linear-gradient(to right, #3a5f9b, #4a6fb3);
+    transition: transform 0.5s ease, border 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+}
+
+#messageInp:focus::placeholder {
+    color: rgb(254, 254, 221);
+}
+
+.btn {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(to right, #3a5f9b, #4a6fb3);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.5s ease, background 0.5s ease, color 1s ease;
+}
+
+
+#messageInp:focus {
+    outline: none;
+    color: aliceblue;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+    background: linear-gradient(to right, #3a5f9b, #4a6fb3);
+}
+
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 1000px;
+    background: #1e3c72;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 1000px;
+    background: linear-gradient(to bottom, #1e3c72, #2a5298);
+}
+
+#navUserArea {
+    height: 7%;
+    width: 100%;
+    /* background:linear-gradient( to bottom, #ff5869,rgb(255, 154, 154) ); */
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    font-size: 35px;
+    position: relative;
+}
+
+#searchbox {
+    height: 35px;
+    width: 70%;
+    border: none;
+    border-radius: 100px;
+    margin-bottom: 14px;
+    background-color: rgb(255, 255, 255);
+    transition: box-shadow 0.5s ease, transform 0.5s ease;
+    text-align: center;
+    font-weight: 700;
+    /* box-shadow: 0.5px 0.5px 100px #fb3e3e; */
+}
+
+#searchbox:focus {
+    box-shadow: 0.01px 0.01px 20px #cdfffc;
+    transform: scale(1.02);
+    outline: none;
+}
+
+#searchbox:hover {
+    box-shadow: 0.01px 0.01px 20px #cdfffc;
+    transform: scale(1.02);
+    outline: none;
+}
+
+#searchbox::placeholder {
+    color: rgb(33, 33, 33);
+    text-transform: capitalize;
+    text-align: center;
+    font-weight: bold;
+}
+
+#searchbox::-webkit-search-cancel-button {
+    padding: 2px;
+    margin-right: 10px;
+    display: none;
+}
+
+#settings {
+    margin-bottom: 14px;
+    color: rgb(20, 20, 20);
+    transition: text-shadow 1.5s ease, transform 1.5s ease;
+}
+
+#settings:hover {
+    transform:  scale(1.2) rotate(180deg);
+    text-shadow: 0.5px 0.5px 30px #cdfffc;
+    cursor: pointer;
+}
+
+#user_header {
+    height: 6%;
+    width: 100%;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+    position: relative;
+    transition: text-shadow 0.5s ease, transform 0.5s ease;
+    /* background:linear-gradient( to bottom, #ff5869,rgb(255, 154, 154) ); */
+}
+
+#user_header:hover {
+    text-shadow: 0.5px 0.5px 30px #74dfff;
+    cursor: pointer;
+    transform: scale(1.025);
+}
+
+#user_header a {
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    font-size: 40px;
+    color: rgb(255, 255, 255);
+    background: linear-gradient(135deg, #807bff, #3a40fd, #807bff, #3a40fd, #807bff, #3a40fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 300% 300%;
+    animation: gradient 8s ease-in-out infinite;
+    text-shadow: #cdfffc;
+    transition: text-shadow 0.5s ease, transform 0.5s ease;
+
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.sub-menu-wrap {
+    position: absolute;
+    top: 70%;
+    right: 5%;
+    width: 190px;
+    max-height: 0px;
+    overflow: hidden;
+    z-index: 1;
+    transition: max-height 0.5s ease;
+}
+
+.sub-menu-wrap.open-menu {
+    max-height: 167px;
+}
+
+.sub-menu {
+    background: linear-gradient(135deg, #bfd5fe 0%, #d0ddf5 100%);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 20px;
+}
+
+.sub-menu-link {
+    display: flex;
+    align-items: center;
+    color: #525252;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: width 0.5s ease, background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+}
+
+.sub-menu-link:hover {
+    /* background-color: #616161; */
+    color: black;
+    transform: translateX(-8px);
+}
+
+.sub-menu-link p {
+    font-size: 20px;
+    width: 80px;
+    transition: font-weight 0.5s ease, transform 0.5s ease;
+}
+
+.sub-menu-link lord-icon {
+    width: 40px;
+    height: 40px;
+    /* margin-right: 20px; */
+}
+.sub-menu hr{
+    margin: 4px 0;
+    border: none    ;
+}
+.sub-menu-link span {
+    font-size: 20px;
+    transition: transform 0.5s ease;
+}
+
+.sub-menu-link:hover span {
+    transform: translateX(5px);
+}
+
+.sub-menu-link:hover p {
+    font-weight: bold;
+}
+.friends-menu-wrap {
+    position: absolute;
+    top:80%;
+    right: 27.5%;
+    width: 60%;
+    max-height: 0px;
+    overflow: auto;
+    transition: max-height 0.5s ease-in-out;
+    z-index: 1; /* Increased z-index */
+}
+.friends-menu-wrap::-webkit-scrollbar {
+    width: 5px;
+    display: none;
+}
+.friends-menu-wrap.activate {
+    max-height: 120px;
+}
+.friends-menu {
+    /* background: #fff; */
+    padding: 20px;
+    margin: 10px;
+    border-radius: 20px;
+    overflow: auto;
+}
+.friends-menu-link {
+    display: flex;
+    align-items: center;
+    color: #525252;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: width 1s ease, background-color 1s ease, color 1s ease, transform 1s ease, font-weight 1s ease;
+    margin-bottom: 5px;
+}
+.friends-menu-link:hover {
+    color: black;
+    transform: translateX(-4px);
+}
+.friends-menu-link p {
+    font-size: 15px;
+    width: 100%;
+    text-align: center;
+    transition: font-weight 0.5s ease;
+    padding: 8px;    
+}
+.friends-menu-link .usericon{
+    padding: 1px;  
+}
+.friends-menu-link:hover p {
+    font-weight: bold;
+}
+#friends{
+    background-image: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    height: 73%;
+    width: 23%;
+    top:25%;
+    left: 14px;
+    border-radius: 20px;
+    position: absolute;
+}
+#globalchat{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    cursor: pointer;
+    transition: text-shadow 0.5s ease, transform 0.5s ease;
+}
+#globalchat:hover{
+    text-shadow: 0.5px 0.5px 30px #74dfff;
+    transform: scale(1.1);
+
+}
+#usersfriends{
+    height: 90%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: auto;
+}
+#usersfriends a{
+    text-decoration: none;
+    color: rgb(116, 200, 255);
+    height: 10%;
+    width: 80%;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 0px;
+    transition: box-shadow 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+#usersfriends a lord-icon{
+    margin-left: 20px;
+}
+#usersfriends a p{
+    margin-top: 4px;    
+    margin-left: 8px;
+    font-weight: bold;
+    transition:transform 0.5s ease;
+}
+#usersfriends hr{
+    width: 80%;
+    margin: 5px 0;
+}
+#usersfriends a p:hover{
+    text-shadow: 0.05px 0.05px 50px #74dfff;
+    transform: scale(1.1);
+}
+#userfriends::-webkit-scrollbar{
+    width: 5px;
+    display: none;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Messenger</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/index_style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+        :root {
+            --mainColor: #1e3c72;
+            --secondaryColor: #2a5298;
+            --whiteColor: #ffffff;
+            --titleColor: #555555;
+            --labelColor: #333333;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="background"></div>
+    <nav>
+        <div id="upnav">
+            <div class="up" id="leftnav">
+                <a href="index.html">
+                    <i class="ri-chat-1-line"></i>
+                    <h1>Secure Messenger</h1>
+                </a>
+            </div>
+            <div class="up" id="middlenav">
+                <h3 id="features">Features <i class="ri-arrow-drop-down-line"></i></h3>
+                <h3 id="donate">Donate <i class="ri-hand-coin-fill"></i></h3>
+            </div>
+            <div class="up" id="rightnav">
+                <a href="login.html">
+                    <h4>Login</h4>
+                </a>
+                <a href="login.html">
+                    <h4>Sign up</h4>
+                </a>
+            </div>
+        </div>
+        <div id="downnav">
+            <div class="features">
+                <h4><i class="ri-git-repository-private-line"></i> Message securely</h4>
+                <p>End-to-end encryption</p>
+            </div>
+            <div class="features">
+                <h4><i class="ri-community-line"></i> Build community</h4>
+                <p>Group conversations made simple</p>
+            </div>
+            <div class="features">
+                <h4><i class="ri-emoji-sticker-line"></i> Express yourself</h4>
+                <p>Say it with stickers,GIFs,voice and more</p>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        const features = document.getElementById('features');
+        const downnav = document.getElementById('downnav');
+
+        features.addEventListener('mouseenter', () => {
+            downnav.classList.add('show');
+        });
+
+        downnav.addEventListener('mouseleave', () => {
+            downnav.classList.remove('show');
+        });
+    </script>
+    <div id="center">
+        <h2>Message Privately</h2>
+        <p>Secure Messenger is a messaging app that uses end-to-end encryption <br> to keep your messages private.</p>
+    </div>
+</body>
+
+</html>

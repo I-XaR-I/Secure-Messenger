@@ -1,0 +1,80 @@
+We are making a web app for a secure messenger in which for security we will be using RSA and AES. AES will be used for message encryption and RSA will be used for AES key exchange.
+
+1. We will first make the frontend of the web app.
+    For the frontend, we will be using HTML and CSS.
+    The web screen will first have a page(index.html) i.e. the home page where in the nav bar it will have home login/register and donate if clicked on login/register a submenu will appear in which login and register will be mentioned, based on user click it will redirect you accordingly to the login or register page. 
+    The nav bar will remain on both pages.
+    The user login data will be stored in a DBMS(mysql) as shown in the fashion mentioned below.
+    After successful registration, the user will be redirected to the login page.
+    After successful login, the user will be redirected to the main chat application where they will be able to chat with their friends.
+
+2. Now comes the backend part.
+    The real-time chatting will be done with the help of Socket.io.
+    Users will be able to send each other friend requests based on their username.
+    If the friend request is accepted, they will become friends.
+    Friends can chat with each other, which will be secured by AES and RSA encryption standards mentioned above that are implemented in Python files.
+
+# Coming to the DBMS part
+The DBMS (MySQL) will be handled by JS in our case and will have the data in the following format:
+
+Table Structure with Attributes and Relationships:
+
+1. Users Table
+    Stores basic user information, including RSA public keys for secure key exchange.
+    Attributes:
+        user_id (PK): INT, Primary Key, unique identifier.
+        username: VARCHAR, Unique, stores user’s name or identifier.
+        public_key: TEXT, stores the RSA public key for key exchange.
+        created_at: TIMESTAMP, default CURRENT_TIMESTAMP, stores the account creation time.
+    Participation Constraint: Mandatory (every user must have an entry here). Cardinality Ratio: 1
+    Relationship with messages (each user can send/receive many messages).
+
+2. Messages Table
+    Stores the encrypted message and metadata about sender/recipient.
+    Attributes:
+        message_id (PK): INT, Primary Key, unique identifier.
+        sender_id (FK): INT, Foreign Key references users(user_id), identifies the message sender.
+        recipient_id (FK): INT, Foreign Key references users(user_id), identifies the message recipient.
+        encrypted_message: TEXT, stores the AES-encrypted message content.
+        encrypted_session_key: TEXT, stores the RSA-encrypted AES session key.
+        timestamp: TIMESTAMP, default CURRENT_TIMESTAMP, records the time the message was sent.
+    Participation Constraint: Mandatory for both sender_id and recipient_id. Cardinality Ratio: M, since users can have multiple messages with each other.
+
+3. Conversations Table
+    Groups messages between two users, useful for loading conversation history.
+    Attributes:
+        conversation_id (PK): INT, Primary Key, unique identifier.
+        user1_id (FK): INT, Foreign Key references users(user_id), represents one user in the conversation.
+        user2_id (FK): INT, Foreign Key references users(user_id), represents the other user in the conversation.
+        last_message_timestamp: TIMESTAMP, stores the time of the last message in the conversation.
+    Participation Constraint: Optional (not every user has to be in a conversation). Cardinality Ratio: 1 with messages (a conversation contains many messages).
+
+4. Message_Status Table
+    Tracks the status of each message (e.g., sent, delivered, read).
+    Attributes:
+        status_id (PK): INT, Primary Key, unique identifier.
+        message_id (FK): INT, Foreign Key references messages(message_id), identifies the message.
+        status: ENUM('sent', 'delivered', 'read'), indicates the current message status.
+        updated_at: TIMESTAMP, default CURRENT_TIMESTAMP, records the status change time.
+    Participation Constraint: Optional (a message may or may not have a status entry). Cardinality Ratio: 1 with messages (a message can have multiple status updates over time).
+
+5. Keys Table
+    Manages any additional key-related information, such as RSA key rotations or AES key expiration.
+    Attributes:
+        key_id (PK): INT, Primary Key, unique identifier.
+        user_id (FK): INT, Foreign Key references users(user_id), identifies the user owning the key.
+        rsa_public_key: TEXT, stores the RSA public key.
+        rsa_private_key: TEXT, stores the RSA private key (in case of encrypted local storage).
+        updated_at: TIMESTAMP, default CURRENT_TIMESTAMP, records the key update time.
+    Participation Constraint: Optional (not every user may have a key entry if they haven’t rotated keys). Cardinality Ratio: 1 with users (a user may have multiple keys over time if using key rotation).
+
+6. Authentication Table 
+    Manages user authentication details if you plan to add a login system.
+    Attributes:
+        auth_id (PK): INT, Primary Key, unique identifier.
+        user_id (FK): INT, Foreign Key references users(user_id), associates authentication with a user.
+        password_hash: TEXT, stores hashed password for secure authentication.
+        last_login: TIMESTAMP, records the last login time.
+        login_attempts: INT, counts login attempts for security tracking.
+    Participation Constraint: Optional (only users with login details are included). Cardinality Ratio: 1:1 with users (each user can have only one set of login credentials).
+
